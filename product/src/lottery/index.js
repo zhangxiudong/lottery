@@ -634,8 +634,9 @@ function lottery() {
     }
 
     for (let i = 0; i < perCount; i++) {
-      let luckyId = random(leftCount);
+      let luckyId = randomLottery(leftCount);
       currentLuckys.push(basicData.leftUsers.splice(luckyId, 1)[0]);
+      console.log(basicData.leftUsers)
       leftCount--;
       leftPrizeCount--;
 
@@ -699,6 +700,22 @@ function changePrize() {
 function random(num) {
   // Math.floor取到0-num-1之间数字的概率是相等的
   return Math.floor(Math.random() * num);
+}
+
+
+function randomLottery() {
+  let user_map = {};
+  let user_array = [];
+  for (let i=0;i<basicData.leftUsers.length;i++){
+    basicData.leftUsers[i][3].split(',').forEach(n => {
+      if (currentPrize.type===0 || parseInt(n)===currentPrize.type){
+        user_array.push(basicData.leftUsers[i])
+        user_map[basicData.leftUsers[i][0]]=i
+      }
+    })
+  }
+  let r = Math.floor(Math.random() * user_array.length);
+  return user_map[user_array[r][0]]
 }
 
 /**
@@ -804,7 +821,7 @@ function reset() {
 }
 
 function createHighlight() {
-  let year = new Date().getFullYear() + "";
+  let year = '2024';
   let step = 4,
     xoffset = 1,
     yoffset = 1,
